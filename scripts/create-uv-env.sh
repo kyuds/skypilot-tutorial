@@ -14,11 +14,11 @@ if ! command -v uv &> /dev/null; then
 fi
 
 # Step 2: Create the environment
-echo "Creating environment 'sky' with Python 3.11..."
-uv venv sky --python 3.11
+echo "Creating environment with Python 3.11..."
+uv venv --seed --python 3.11
 
 echo ""
 echo "✅ Environment created successfully!"
 echo ""
 echo "To activate the environment, run:"
-echo "  source sky/bin/activate"
+echo "  source .venv/bin/activate"
