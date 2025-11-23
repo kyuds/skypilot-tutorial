@@ -44,20 +44,20 @@ if [ -z "$BUCKET_NAME" ]; then
   exit 1
 fi
 
-# echo "Creating S3 bucket: ${BUCKET_NAME} in ${REGION}..."
-# aws s3 mb s3://${BUCKET_NAME} --region ${REGION}
+echo "Creating S3 bucket: ${BUCKET_NAME} in ${REGION}..."
+aws s3 mb s3://${BUCKET_NAME} --region ${REGION}
 
 echo "Downloading IMDb dataset from HuggingFace..."
 TEMP_DIR=$(mktemp -d)
 cd ${TEMP_DIR}
 
 # Download the dataset files directly from HuggingFace
-wget https://huggingface.co/datasets/stanfordnlp/imdb/resolve/main/plain_text/train-00000-of-00001.parquet -O train.parquet
-wget https://huggingface.co/datasets/stanfordnlp/imdb/resolve/main/plain_text/test-00000-of-00001.parquet -O test.parquet
+wget https://huggingface.co/datasets/stanfordnlp/sst2/resolve/main/data/train-00000-of-00001.parquet -O train.parquet
+wget https://huggingface.co/datasets/stanfordnlp/sst2/resolve/main/data/validation-00000-of-00001.parquet -O test.parquet
 
 echo "Uploading to S3..."
-aws s3 cp train.parquet s3://${BUCKET_NAME}/data/imdb/train.parquet --region ${REGION}
-aws s3 cp test.parquet s3://${BUCKET_NAME}/data/imdb/test.parquet --region ${REGION}
+aws s3 cp train.parquet s3://${BUCKET_NAME}/train.parquet --region ${REGION}
+aws s3 cp test.parquet s3://${BUCKET_NAME}/test.parquet --region ${REGION}
 
 echo "Cleaning up..."
 cd -
@@ -65,5 +65,5 @@ rm -rf ${TEMP_DIR}
 
 echo "Setup complete!"
 echo "Bucket: s3://${BUCKET_NAME}"
-echo "Training data: s3://${BUCKET_NAME}/data/imdb/train.parquet"
-echo "Test data: s3://${BUCKET_NAME}/data/imdb/test.parquet"
+echo "Training data: s3://${BUCKET_NAME}/train.parquet"
+echo "Test data: s3://${BUCKET_NAME}/test.parquet"

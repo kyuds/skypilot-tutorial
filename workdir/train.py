@@ -1,20 +1,15 @@
-#!/usr/bin/env python3
-"""
-Train DistilBERT on IMDb sentiment analysis dataset.
-Usage: python train.py --data-dir ./data --learning-rate 2e-5 --batch-size 16 --epochs 3
-"""
-
 import argparse
 import os
-from datasets import load_from_disk, Dataset, DatasetDict
+
 import pandas as pd
+import torch
+from datasets import Dataset, DatasetDict
 from transformers import (
     DistilBertTokenizer,
     DistilBertForSequenceClassification,
     Trainer,
     TrainingArguments,
 )
-import torch
 
 
 def parse_args():
@@ -58,8 +53,8 @@ def parse_args():
     parser.add_argument(
         "--max-length",
         type=int,
-        default=512,
-        help="Maximum sequence length (default: 512)",
+        default=128,
+        help="Maximum sequence length (default: 128)",
     )
     return parser.parse_args()
 
@@ -96,7 +91,7 @@ def preprocess_data(dataset, tokenizer, max_length):
     
     def tokenize_function(examples):
         return tokenizer(
-            examples["text"],
+            examples["sentence"],
             padding="max_length",
             truncation=True,
             max_length=max_length,
@@ -143,6 +138,11 @@ def main():
         args.model_name,
         num_labels=2,
     )
+
+    # Move model to GPU
+    if torch.cuda.is_available():
+        model = model.to("cuda")
+        print(f"Model device: {next(model.parameters()).device}")
     
     # Preprocess data
     tokenized_dataset = preprocess_data(dataset, tokenizer, args.max_length)
@@ -161,6 +161,7 @@ def main():
         logging_dir=f"{args.output_dir}/logs",
         logging_steps=100,
         report_to="none",  # Disable wandb/tensorboard
+        fp16=True,
     )
     
     # Create trainer
