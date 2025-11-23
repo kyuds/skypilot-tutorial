@@ -1,5 +1,5 @@
 name: my-training-job
-workdir: ./workdir
+workdir: ./train
 num_nodes: 1
 
 resources:
