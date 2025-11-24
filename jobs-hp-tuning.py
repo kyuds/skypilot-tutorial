@@ -17,4 +17,4 @@ for config in configs:
     task = sky.Task.from_yaml("train.yaml")
     task.update_envs(asdict(config))
     ret = jobs_sdk.launch(task, name=f"sky-task-{config.run_name}")
-    print(ret)
+    print(f"Submitted hyperparameter tuning for ${config}")
