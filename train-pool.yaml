@@ -1,0 +1,22 @@
+name: my-pool-training-job
+
+resources:
+  accelerators: T4
+  cpus: 4+
+  memory: 2+
+
+envs:
+  RUN_NAME: run-v1
+  LEARNING_RATE: 2e-5
+  BATCH_SIZE: 16
+  EPOCHS: 3
+
+run: |
+  source .venv/bin/activate
+
+  python train.py \
+    --data-dir /datasets-s3 \
+    --learning-rate $LEARNING_RATE \
+    --batch-size $BATCH_SIZE \
+    --epochs $EPOCHS \
+    --output-dir /results-s3/$RUN_NAME

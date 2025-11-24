@@ -1,0 +1,25 @@
+pool:
+  workers: 2
+
+resources:
+  accelerators: T4
+  cpus: 4+
+  memory: 2+
+
+secrets:
+  WANDB_API_KEY: <MY_WANDB_API_KEY>
+
+file_mounts:
+  /datasets-s3:
+    source: s3://<MY_DATA_BUCKET>
+    mode: COPY
+  /results-s3:
+    source: s3://<MY_RESULT_BUCKET>
+    mode: MOUNT
+
+setup: |
+  uv venv --seed --python 3.11
+  source .venv/bin/activate
+
+  uv pip install -r requirements.txt
+  uv pip install wandb

@@ -1,12 +1,15 @@
+from dataclasses import dataclass, asdict
+
 import sky
 from sky.jobs.client import sdk as jobs_sdk
-from dataclasses import dataclass, asdict
+
 
 @dataclass
 class HyperParamConfig:
     run_name: str
     batch_size: int
     learning_rate: float
+
 
 configs = [
     HyperParamConfig("run-v1", 8, 2e-15),
@@ -16,5 +19,5 @@ configs = [
 for config in configs:
     task = sky.Task.from_yaml("train.yaml")
     task.update_envs(asdict(config))
-    ret = jobs_sdk.launch(task, name=f"sky-task-{config.run_name}")
+    jobs_sdk.launch(task, name=f"sky-task-{config.run_name}")
     print(f"Submitted hyperparameter tuning for ${config}")
