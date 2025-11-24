@@ -3,6 +3,7 @@ import os
 
 import pandas as pd
 import torch
+import wandb
 from datasets import Dataset, DatasetDict
 from transformers import (
     DistilBertTokenizer,
@@ -160,7 +161,7 @@ def main():
         load_best_model_at_end=True,
         logging_dir=f"{args.output_dir}/logs",
         logging_steps=100,
-        report_to="none",  # Disable wandb/tensorboard
+        report_to="wandb",
         fp16=True,
     )
     

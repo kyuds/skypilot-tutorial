@@ -8,10 +8,14 @@ resources:
   memory: 2+
 
 envs:
+  WANDB_NAME: <MY_WANDB_NAME>
   RUN_NAME: run-v1
   LEARNING_RATE: 2e-5
   BATCH_SIZE: 16
   EPOCHS: 3
+
+secrets:
+  WANDB_API_KEY: <MY_WANDB_API_KEY>
 
 file_mounts:
   /datasets-s3:
@@ -26,6 +30,7 @@ setup: |
   source .venv/bin/activate
 
   uv pip install -r requirements.txt
+  uv pip install wandb
 
 run: |
   source .venv/bin/activate
