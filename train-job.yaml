@@ -8,7 +8,6 @@ resources:
   memory: 2+
 
 envs:
-  WANDB_NAME: <MY_WANDB_NAME>
   RUN_NAME: run-v1
   LEARNING_RATE: 2e-5
   BATCH_SIZE: 16
@@ -19,11 +18,11 @@ secrets:
 
 file_mounts:
   /datasets-s3:
-    source: <MY_DATA_BUCKET>
+    source: s3://<MY_DATA_BUCKET>
     mode: COPY
-  /results-s3:  # MOUNT mode
-    name: <MY_RESULT_BUCKET>
-    store: s3
+  /results-s3:
+    source: s3://<MY_RESULT_BUCKET>
+    mode: MOUNT
 
 setup: |
   uv venv --seed --python 3.11
