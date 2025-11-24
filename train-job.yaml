@@ -15,10 +15,10 @@ envs:
 
 file_mounts:
   /datasets-s3:
-    source: s3://skypilot-tutorial-bucket
+    source: <MY_DATA_BUCKET>
     mode: COPY
   /results-s3:  # MOUNT mode
-    name: skypilot-tutorial-results-bucket
+    name: <MY_RESULT_BUCKET>
     store: s3
 
 setup: |
