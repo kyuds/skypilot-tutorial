@@ -2,6 +2,7 @@ pool:
   workers: 2
 
 resources:
+  infra: k8s
   accelerators: T4
   cpus: 4+
   memory: 2+
