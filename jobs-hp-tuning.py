@@ -11,13 +11,18 @@ class HyperParamConfig:
     learning_rate: float
 
 
-configs = [
-    HyperParamConfig("run-v1", 8, 2e-15),
-    HyperParamConfig("run-v2", 16, 2e-15),
-]
+def run():
+    configs = [
+        HyperParamConfig("run-v1", 8, 2e-15),
+        HyperParamConfig("run-v2", 16, 2e-15),
+    ]
 
-for config in configs:
-    task = sky.Task.from_yaml("train.yaml")
-    task.update_envs(asdict(config))
-    jobs_sdk.launch(task, name=f"sky-task-{config.run_name}")
-    print(f"Submitted hyperparameter tuning for ${config}")
+    for config in configs:
+        task = sky.Task.from_yaml("train.yaml")
+        task.update_envs(asdict(config))
+        jobs_sdk.launch(task, name=f"sky-task-{config.run_name}")
+        print(f"Submitted hyperparameter tuning for ${config}")
+
+
+if __name__ == "__main__":
+    run()
