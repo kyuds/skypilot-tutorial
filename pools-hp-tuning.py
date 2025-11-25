@@ -2,7 +2,7 @@ import argparse
 from dataclasses import dataclass, asdict
 
 import sky
-from sky.jobs.client import sdk as jobs_sdk
+from sky import jobs
 
 
 @dataclass
@@ -22,7 +22,7 @@ def run(pool: str):
     for config in configs:
         task = sky.Task.from_yaml("train.yaml")
         task.update_envs(asdict(config))
-        jobs_sdk.launch(task, name=f"sky-task-{config.run_name}", pool=pool)
+        jobs.launch(task, name=f"sky-task-{config.run_name}", pool=pool)
         print(f"Submitted hyperparameter tuning for {config}")
 
 
